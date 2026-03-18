@@ -6,9 +6,9 @@ on:
   pull_request:
 
 jobs:
-  e2e:
+  quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -32,19 +32,106 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Run public suite (blocking)
-        run: npm run test -- --project=public-chromium --project=public-firefox --project=public-webkit --project=api-smoke
+  public-chromium-shards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: quality
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ["1/3", "2/3", "3/3"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run chromium shard
+        run: npm run test:public:shard -- --shard=${{ matrix.shard }}
+
+      - name: Upload shard artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts-shard-${{ matrix.shard }}
+          path: |
+            blob-report/
+            test-results/
+          if-no-files-found: warn
+
+  api-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: quality
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run API smoke
+        run: npm run test -- --project=api-smoke
+
+      - name: Upload API artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts-api-smoke
+          path: |
+            blob-report/
+            test-results/
+          if-no-files-found: warn
+
+  wallet-mock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: quality
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Run mocked-wallet suite (non-blocking showcase)
         continue-on-error: true
         run: npm run test:wallet-mock
 
-      - name: Upload report and artifacts
+      - name: Upload wallet-mock artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-artifacts
+          name: playwright-artifacts-wallet-mock
           path: |
-            playwright-report/
+            blob-report/
             test-results/
           if-no-files-found: warn

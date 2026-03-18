@@ -5,9 +5,13 @@
   "private": true,
   "scripts": {
     "test": "playwright test",
+    "test:fast": "playwright test --workers=75%",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report",
+    "test:public:chromium": "playwright test --project=public-chromium",
+    "test:public:fast": "playwright test --project=public-chromium --project=api-smoke --workers=75%",
+    "test:public:shard": "playwright test --project=public-chromium",
     "test:public": "playwright test --project=public-chromium --project=public-firefox --project=public-webkit --project=public-mobile-chromium --project=api-smoke",
     "test:wallet-mock": "playwright test --grep @wallet-mock",
     "lint": "eslint .",

@@ -61,8 +61,14 @@ npx playwright install
 # Full suite
 npm test
 
+# Full suite with more local concurrency
+npm run test:fast
+
 # Public coverage only
 npm run test:public
+
+# Faster local public loop (Chromium + API)
+npm run test:public:fast
 
 # Optional wallet simulation coverage
 npm run test:wallet-mock
@@ -80,9 +86,16 @@ npm run typecheck
 GitHub Actions workflow:
 
 - runs lint + typecheck;
-- runs blocking public suite (`public-*` + `api-smoke`);
+- runs Chromium public tests in parallel shard jobs (`1/3`, `2/3`, `3/3`);
+- runs `api-smoke` as a separate blocking job;
 - runs mocked-wallet suite as non-blocking showcase coverage;
-- uploads test artifacts for investigation.
+- uploads shard-specific test artifacts for investigation and report merging.
+
+To rerun a failing shard locally, run:
+
+```bash
+npm run test:public:shard -- --shard=2/3
+```
 
 ## Real-world tradeoffs
 

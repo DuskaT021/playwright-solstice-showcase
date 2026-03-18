@@ -11,12 +11,17 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
-  workers: isCI ? 2 : undefined,
-  reporter: [
-    ["list"],
-    ["html", { open: "never", outputFolder: "playwright-report" }],
-    ["junit", { outputFile: "test-results/junit.xml" }],
-  ],
+  workers: isCI ? 3 : "75%",
+  reporter: isCI
+    ? [
+        ["blob"],
+        ["junit", { outputFile: "test-results/junit.xml" }],
+      ]
+    : [
+        ["list"],
+        ["html", { open: "never", outputFolder: "playwright-report" }],
+        ["junit", { outputFile: "test-results/junit.xml" }],
+      ],
   use: {
     baseURL: "https://app.solstice.finance",
     trace: "on-first-retry",
