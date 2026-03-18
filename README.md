@@ -63,7 +63,26 @@ npm install
 npx playwright install
 ```
 
-For optional local exploration, see [Playwright CLI](https://github.com/microsoft/playwright-cli/tree/main).
+## Optional local Playwright CLI
+
+For interactive local exploration (manual probing, snapshots, quick selector checks), you can also use the Playwright CLI as an optional tool:
+
+- Official project: [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli/tree/main)
+- Install globally:
+
+```bash
+npm install -g @playwright/cli@latest
+playwright-cli --help
+```
+
+- Example local usage:
+
+```bash
+playwright-cli open https://app.solstice.finance --headed
+playwright-cli snapshot
+```
+
+Use this as a local debugging aid. For automated repo validation and CI parity, keep using this repository's npm scripts and Playwright test suite.
 
 ## Run commands
 
