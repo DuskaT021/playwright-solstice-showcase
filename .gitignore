@@ -7,3 +7,6 @@ blob-report/
 dist/
 coverage/
 .DS_Store
+.env
+.env.local
+*.log
