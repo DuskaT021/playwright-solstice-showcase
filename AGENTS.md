@@ -1,0 +1,56 @@
+# Agent Playbook
+
+This file is the source of truth for AI agents and contributors working in this repository.
+
+## Repository Scope
+
+- Target app: `https://app.solstice.finance`
+- Testing style: end-user focused Playwright automation
+- Access model: public URL behavior only, no private API keys
+- Safety model: non-destructive actions only
+
+## Core Standards
+
+### Public E2E Authoring
+
+1. Prefer semantic selectors (`getByRole`, `getByLabel`, accessible names).
+2. Avoid brittle CSS/XPath selectors unless no semantic selector exists.
+3. Assert page readiness before deeper flow assertions.
+4. Keep tests isolated and deterministic.
+5. Use fixtures and POM patterns already present in `fixtures/` and `pages/`.
+
+### Wallet Mock Guardrails
+
+1. Wallet tests are simulation-only, never production wallet proof.
+2. Inject wallet provider before navigation (`addInitScript` pattern).
+3. Keep deterministic account/chain values.
+4. Keep wallet tests isolated in `tests/wallet-mock/`.
+5. Preserve non-blocking CI behavior for wallet-mock coverage.
+
+### CI Shard Triage
+
+When a shard fails:
+
+1. Identify failing shard and test from CI logs.
+2. Reproduce shard locally:
+   - `npm run test:public:shard -- --shard=2/3`
+3. Re-run failing spec in headed mode:
+   - `npx playwright test tests/public/<spec>.spec.ts --headed`
+4. Inspect artifacts in `test-results/` and shard `blob-report/`.
+5. Classify cause: selector drift, timing/race, or infrastructure/network.
+
+## Required Validation Before Commit
+
+Run:
+
+- `npm run lint`
+- `npm run typecheck`
+- targeted test command related to your change (for example `npm run test:public:shard -- --shard=1/3 --list` or a focused `npx playwright test ...`)
+
+## Reporting Expectations
+
+Agent outputs should include:
+
+- root cause summary (if fixing a failure),
+- exact command used to validate,
+- any residual risks or follow-up checks.

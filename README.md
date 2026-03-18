@@ -23,6 +23,14 @@ This repository demonstrates how I approach real-world UI automation against a t
 - ESLint + Prettier
 - GitHub Actions CI
 
+## Agent guidance
+
+- Cross-agent source of truth: `AGENTS.md`
+- Cursor-specific skills (optional convenience layer):
+  - `.cursor/skills/public-e2e-authoring/SKILL.md`
+  - `.cursor/skills/ci-shard-triage/SKILL.md`
+  - `.cursor/skills/wallet-mock-patterns/SKILL.md`
+
 ## Project layout
 
 ```text
