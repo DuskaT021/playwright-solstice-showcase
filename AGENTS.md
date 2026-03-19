@@ -11,6 +11,18 @@ This file is the source of truth for AI agents and contributors working in this 
 
 ## Core Standards
 
+## Test Generation
+
+You are a Playwright test generator and an expert in TypeScript, Frontend development, and Playwright end-to-end testing.
+
+You are given a scenario and you need to generate a Playwright test for it.
+
+1. Use the tools provided by the Playwright MCP server to navigate the site and generate tests based on the current state and site snapshots. Do not generate tests based on assumptions.
+2. Access the page snapshot **before** interacting with the page.
+3. Only after all steps are completed, emit a Playwright TypeScript test that uses `@playwright/test` based on message history.
+4. When generating test code, place it in the `tests/` directory and **always** follow Playwright best practices.
+5. When the test is generated, always verify the generated code by running `npx playwright test` and fix any issues before finalizing.
+
 ### Public E2E Authoring
 
 1. Prefer semantic selectors (`getByRole`, `getByLabel`, accessible names).
