@@ -14,7 +14,7 @@ This repository demonstrates how I approach real-world UI automation against a t
 
 - Public end-user smoke and navigation checks in `tests/public/`
 - Public endpoint reachability check in `tests/api/`
-- Optional mocked wallet-provider scenarios in `tests/wallet-mock/` (explicit simulation)
+- Optional **Solana** wallet simulation in `tests/wallet-mock/` (Phantom-shaped `window.solana` / `window.phantom.solana`; not production wallet proof)
 
 ## Tech stack
 
@@ -99,7 +99,7 @@ npm run test:public
 # Faster local public loop (Chromium + API)
 npm run test:public:fast
 
-# Optional wallet simulation coverage
+# Optional Solana wallet simulation coverage (injection + stub contract)
 npm run test:wallet-mock
 
 # Interactive UI runner

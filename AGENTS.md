@@ -34,10 +34,11 @@ You are given a scenario and you need to generate a Playwright test for it.
 ### Wallet Mock Guardrails
 
 1. Wallet tests are simulation-only, never production wallet proof.
-2. Inject wallet provider before navigation (`addInitScript` pattern).
-3. Keep deterministic account/chain values.
+2. Inject a **Solana** browser-wallet stub before navigation (`addInitScript`), e.g. Phantom-shaped `window.solana` / `window.phantom.solana` (see `tests/wallet-mock/mockSolanaWallet.ts`).
+3. Keep a deterministic mock **public key** (not Ethereum chain/account semantics).
 4. Keep wallet tests isolated in `tests/wallet-mock/`.
 5. Preserve non-blocking CI behavior for wallet-mock coverage.
+6. **Validation:** `npm run test:wallet-mock` plus `npm run lint` and `npm run typecheck`; tests prove injection + stub contract (+ optional stable UI), not real wallet security.
 
 ### CI Shard Triage
 
